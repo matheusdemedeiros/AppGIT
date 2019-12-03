@@ -1,48 +1,145 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 
-class Cadastro extends React.Component {
+class Cadastro extends React.Component{
+
   constructor(props){
     super(props);
+    this.props.navigation;
     this.state = {
       nome: '',
-      senha: ''
+      userGit:'',
+      senha:'',
+      confirmSenha:''
+    }  
+  }
+
+  //LIMPAR CAMPOS
+  limparCampos = () =>{
+    this.setState({nome:''});
+    this.setState({senha:''});
+    this.setState({userGit:''});
+    this.setState({confirmSenha:''});
+  }
+
+  
+   //INSERCAO DOS DADOS
+   insercaoUsuarios = () =>{
+    
+    var nome = this.state.nome;
+    var senha = this.state.senha;
+    var userGit = this.state.userGit;
+    var confirmSenha = this.confirmSenha;
+
+      if(this.state.nome != "" && this.state.senha != "" && this.state.userGit != "" && this.state.confirmSenha != ""){
+        if(this.state.confirmSenha == this.state.senha){
+        fetch('http://'+ip+'/programas/2019_II_POO/app/insert.php',{
+            method: 'POST',
+            body: JSON.stringify({
+                nome: nome,
+                senha: senha,
+                userGit: userGit,
+                confirmSenha: confirmSenha               
+            })
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then(json => {
+            Alert.alert(json);
+            this.setState({nome:''});
+            this.setState({senha:''});
+            this.setState({userGit:''});
+            this.setState({confirmSenha:''});
+            })
+          }else{
+            Alert.alert('As senhas devem ser iguais!!');
+          }
+    }else{
+        Alert.alert('Preencha os dados!');
     }
+}
+
+  static navigationOptions = {
+    title: 'Cadastro'
   }
   
   render(){
+    const {navigation} = this.props;
     return (
+  
       <View style={styles.container}>
         
-        <Text style={styles.title}>Bem vindo ao App</Text>
+        <Text style={styles.title}>Cadastro</Text>
         
-        <TextInput style={styles.input} placeholder=" Informe o seu nome"></TextInput>
-        <TextInput style={styles.input} placeholder=" Informe a sua senha"></TextInput>
+
+        <TextInput 
+        style={styles.input}
+        placeholder=" Informe o seu nome"
+        value={this.state.nome}
+        onChangeText={nome => this.setState({nome})}
+        >
+        
+        </TextInput>
+
+        <TextInput
+        style={styles.input}
+        placeholder=" Informe o seu username GIT"
+        onChangeText={userGit => this.setState({userGit})}
+        value={this.state.userGit}
+        >
+        </TextInput>
+
+        <TextInput 
+        style={styles.input}
+        placeholder=" Defina uma senha"
+        onChangeText={senha => this.setState({senha})}
+        value={this.state.senha}
+        >
+        </TextInput>
+
+        <TextInput
+        style={styles.input}
+        placeholder=" Confirme a senha"
+        onChangeText={confirmSenha => this.setState({confirmSenha})}
+        value={this.state.confirmSenha}        
+        >
+        </TextInput>
               
         <View style={styles.buttons}>
         
-          <TouchableOpacity style={styles.buttonConfirm}  onPress={this.onPress}>
-            <Text style={styles.textButton}>Confirmar</Text>
+          <TouchableOpacity
+          style={styles.buttonConfirm}
+          //onPress={() => alert.alert(this.state.nome)}
+          onPress={this.insercaoUsuarios}
+          >
+          <Text
+            style={styles.textButton}>Confirmar
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonAdd}  onPress={this.onPress}>
-            <Text style={styles.textButton}>Cadastrar-se agora</Text>
+          <TouchableOpacity
+          style={styles.buttonClear}
+          onPress={this.limparCampos}>
+            <Text
+            style={styles.textButton}>Limpar Campos
+            </Text>
           </TouchableOpacity>
 
         </View>
       
       </View>
     );
+
   }
 }
-
 
 export default Cadastro;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4048C9',
+    backgroundColor: '#7159c1',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -57,6 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     borderColor: 'black',
     borderWidth: 2,
+    borderRadius: 6
     
   },
   buttonConfirm:{
@@ -67,10 +165,12 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     justifyContent:"center",
-    alignItems:"center"
+    alignItems:"center",
+    borderRadius: 6
+  
     
   },
-  buttonAdd:{
+  buttonClear:{
     marginTop: 20,
     height: 50,
     width: 230,
@@ -78,7 +178,8 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     justifyContent:"center",
-    alignItems:"center"
+    alignItems:"center",
+    borderRadius: 6
   },
 
   textButton:{

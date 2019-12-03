@@ -1,24 +1,38 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 
-class Listagem extends React.Component {
+
+class Listagem extends React.Component{
+
   constructor(props){
     super(props);
-    this.state = {
-      nome: '',
-      senha: ''
-    }
+    this.props.navigation;
+  }
+
+  static navigationOptions = {
+    title: 'Listagem'
   }
   
   render(){
+    const {navigation} = this.props;
     return (
+  
       <View style={styles.container}>
         
-        <Text style={styles.title}>Bem vindo ao App</Text>
+        <Text style={styles.title}>Repositórios</Text>
         
-        <TextInput style={styles.input} placeholder=" Informe o seu nome"></TextInput>
-        <TextInput style={styles.input} placeholder=" Informe a sua senha"></TextInput>
-              
+        <View style={styles.listBox}>
+        <Text>teste</Text>
+        </View>
+        <View style={styles.listBox}>
+        <Text>teste</Text>
+        </View>
+        <View style={styles.listBox}>
+        <Text>teste</Text>
+        </View>
+
+
+                      
         <View style={styles.buttons}>
         
           <TouchableOpacity style={styles.buttonConfirm}  onPress={this.onPress}>
@@ -33,16 +47,16 @@ class Listagem extends React.Component {
       
       </View>
     );
+
   }
 }
-
 
 export default Listagem;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4048C9',
+    backgroundColor: '#7159c1',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -57,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     borderColor: 'black',
     borderWidth: 2,
-    
+    borderRadius: 6
   },
   buttonConfirm:{
     marginTop: 20,
@@ -67,18 +81,19 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     justifyContent:"center",
-    alignItems:"center"
-    
+    alignItems:"center",
+    borderRadius: 6
   },
   buttonAdd:{
     marginTop: 20,
     height: 50,
     width: 230,
-    backgroundColor:"#7F7700",
+    backgroundColor:"#9D5DFF",
     borderColor: 'black',
     borderWidth: 2,
     justifyContent:"center",
-    alignItems:"center"
+    alignItems:"center",
+    borderRadius: 6
   },
 
   textButton:{
@@ -88,7 +103,21 @@ const styles = StyleSheet.create({
 
   buttons:{
     alignItems:"center"
+  },
+
+  listBox:{
+    textAlign:"right",
+    backgroundColor:'white',
+    marginTop: 15,
+    height:130,
+    width: "95%",
+    borderColor:"black",
+    borderRadius: 6,
+    borderWidth: 2
+
   }
+
+
 
 });
 
