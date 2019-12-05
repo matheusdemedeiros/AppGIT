@@ -1,51 +1,66 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, FlatList, ListItem } from 'react-native';
 
 
-class Listagem extends React.Component{
+class Listagem extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.props.navigation;
+    this.state = {
+      vetor:[]
+    };
   }
 
   static navigationOptions = {
     title: 'Listagem'
   }
-  
-  render(){
-    const {navigation} = this.props;
+
+  selecao = () => {
+    var nomeRepo = '';
+    fetch('https://api.github.com/users/matheusdemedeiros/repos')
+    .then(response => {
+        let data = response.json();
+        return data;
+        
+    })
+    .then(json => {
+      this.setState({vetor : json});
+    })
+}
+   
+
+  render() {
+    const { navigation } = this.props;
     return (
-  
+      
+      
       <View style={styles.container}>
         
         <Text style={styles.title}>Repositórios</Text>
-        
-        <View style={styles.listBox}>
-        <Text>teste</Text>
-        </View>
-        <View style={styles.listBox}>
-        <Text>teste</Text>
-        </View>
-        <View style={styles.listBox}>
-        <Text>teste</Text>
-        </View>
+
+        <FlatList style={styles.containerListBox} data={this.state.vetor}
+        renderItem={({ item }) => 
+          <View style={styles.listBox}>
+            <Text style={styles.textBox}>Id: {item.id}</Text>
+            <Text style={styles.textBox}>Repo: {item.name}</Text>
+            <Text style={styles.textBox}>Dono: {item.owner.login}</Text>
+          </View>
+          
+        }></FlatList>
 
 
-                      
         <View style={styles.buttons}>
-        
-          <TouchableOpacity style={styles.buttonConfirm}  onPress={this.onPress}>
-            <Text style={styles.textButton}>Confirmar</Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonAdd}  onPress={this.onPress}>
-            <Text style={styles.textButton}>Cadastrar-se agora</Text>
+          <TouchableOpacity style={styles.buttonConfirm} onPress={this.selecao}>
+            <Text style={styles.textButton}>Listar</Text>
           </TouchableOpacity>
 
         </View>
-      
+
       </View>
+
+  
     );
 
   }
@@ -54,6 +69,11 @@ class Listagem extends React.Component{
 export default Listagem;
 
 const styles = StyleSheet.create({
+  containerListBox:{
+    width: "80%",
+    
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#7159c1',
@@ -62,60 +82,67 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color:'white'
+    color: 'white',
+    marginBottom: 10
   },
-  input:{
-    marginTop:10,
+  input: {
+    marginTop: 10,
     height: 50,
-    width:380,
-    backgroundColor:'white',
+    width: 380,
+    backgroundColor: 'white',
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 6
   },
-  buttonConfirm:{
+  buttonConfirm: {
     marginTop: 20,
     height: 50,
     width: 150,
-    backgroundColor:"#9D5DFF",
+    backgroundColor: "#9D5DFF",
     borderColor: 'black',
     borderWidth: 2,
-    justifyContent:"center",
-    alignItems:"center",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 6
   },
-  buttonAdd:{
+  buttonAdd: {
     marginTop: 20,
     height: 50,
     width: 230,
-    backgroundColor:"#9D5DFF",
+    backgroundColor: "#9D5DFF",
     borderColor: 'black',
     borderWidth: 2,
-    justifyContent:"center",
-    alignItems:"center",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 6
   },
 
-  textButton:{
-    fontSize:20,
+  textButton: {
+    fontSize: 20,
     color: "white"
   },
 
-  buttons:{
-    alignItems:"center"
+  buttons: {
+    alignItems: "center"
   },
 
-  listBox:{
-    textAlign:"right",
-    backgroundColor:'white',
+  listBox: {
+    textAlign: "right",
+    backgroundColor: 'white',
     marginTop: 15,
-    height:130,
+    height: 130,
     width: "95%",
-    borderColor:"black",
+    borderColor: "black",
     borderRadius: 6,
-    borderWidth: 2
+    borderWidth: 2,
+    marginLeft: 5,
+    
 
-  }
+  },
+  textBox:{
+    fontSize: 18,
+    marginLeft: 5,
+  },
 
 
 

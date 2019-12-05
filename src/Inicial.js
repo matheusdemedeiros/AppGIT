@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
 
 
-var ip = '192.168.56.1';
+var ip = '10.151.34.116';
 
 class Inicial extends React.Component{
 
@@ -11,7 +11,8 @@ class Inicial extends React.Component{
     this.props.navigation;
     this.state = {
       nome: '',
-      senha: ''
+      senha: '',
+      userGit:''
     }
   }
 
@@ -21,7 +22,7 @@ class Inicial extends React.Component{
     var nome = this.state.nome;
     var senha = this.state.senha;
       if(this.state.nome != "" && this.state.senha != ""){
-        fetch('http://'+ip+'/programas/2019_II_POO/app/insert.php',{
+        fetch('http://'+ip+'/app/login.php',{
             method: 'POST',
             body: JSON.stringify({
                 nome: nome,
@@ -32,9 +33,10 @@ class Inicial extends React.Component{
             return response.json()
         })
         .then(json => {
-            Alert.alert(json);
-            this.setState({nome:''});
-            this.setState({senha:''});
+           // Alert.alert(json);
+            this.setState({userGit : json});
+
+           
             })
     }else{
         Alert.alert('Preencha os dados!');
@@ -53,11 +55,11 @@ class Inicial extends React.Component{
         
         <Text style={styles.title}>Bem vindo ao App</Text>
         
-        <TextInput style={styles.input} placeholder=" Informe o seu nome"
+        <TextInput style={styles.input} placeholder="  Informe o seu nome"
         onChangeText={nome => this.setState({nome})}
         value = {this.state.nome}
         ></TextInput>
-        <TextInput style={styles.input} placeholder=" Informe a sua senha"
+        <TextInput style={styles.input} placeholder="  Informe a sua senha"
         onChangeText={senha => this.setState({senha})}
         value = { this.state.senha}
         ></TextInput>
@@ -70,7 +72,7 @@ class Inicial extends React.Component{
             <Text style={styles.textButton}>Confirmar</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonAdd}  onPress={() => this.props.navigation.navigate('Cadastro')}>
+          <TouchableOpacity style={styles.buttonAdd}  onPress={() => this.props.navigation.navigate('Cadastro',{resultado: this.state.resutadoSoma})}>
             <Text style={styles.textButton}>Cadastrar-se agora</Text>
           </TouchableOpacity>
 

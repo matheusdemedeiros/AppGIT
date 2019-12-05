@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
+
+var ip = '10.151.34.116';
 
 class Cadastro extends React.Component{
 
@@ -29,18 +31,17 @@ class Cadastro extends React.Component{
     var nome = this.state.nome;
     var senha = this.state.senha;
     var userGit = this.state.userGit;
-    var confirmSenha = this.confirmSenha;
+    //var confirmSenha = this.confirmSenha;
 
-      if(this.state.nome != "" && this.state.senha != "" && this.state.userGit != "" && this.state.confirmSenha != ""){
-        if(this.state.confirmSenha == this.state.senha){
-        fetch('http://'+ip+'/programas/2019_II_POO/app/insert.php',{
+      if(this.state.nome != "" && this.state.senha != "" && this.state.userGit != ""){
+        //if(this.state.confirmSenha == this.state.senha){
+        fetch('http://'+ip+'/app/insertUser.php',{
             method: 'POST',
             body: JSON.stringify({
                 nome: nome,
                 senha: senha,
                 userGit: userGit,
-                confirmSenha: confirmSenha               
-            })
+              })
         })
         .then(response => {
             return response.json()
@@ -50,11 +51,11 @@ class Cadastro extends React.Component{
             this.setState({nome:''});
             this.setState({senha:''});
             this.setState({userGit:''});
-            this.setState({confirmSenha:''});
+            //this.setState({confirmSenha:''});
             })
-          }else{
-            Alert.alert('As senhas devem ser iguais!!');
-          }
+          //}else{
+          //Alert.alert('As senhas devem ser iguais!!');
+          //}
     }else{
         Alert.alert('Preencha os dados!');
     }
